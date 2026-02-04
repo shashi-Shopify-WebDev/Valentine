@@ -27,6 +27,7 @@
             animation: floatDown 10s linear infinite;
             z-index: -1;
             opacity: 0.6;
+            pointer-events: none; /* Prevents interference with scrolling */
         }
 
         @keyframes floatDown {
@@ -40,27 +41,40 @@
             max-width: 800px;
             width: 90%;
             text-align: center;
-            background: rgba(255, 255, 255, 0.85);
-            padding: 40px;
+            background: rgba(255, 255, 255, 0.90);
+            padding: 40px 20px;
             margin-top: 50px;
             margin-bottom: 50px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             border: 2px solid #fff;
+            overflow: hidden; /* Contains animations */
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             margin-bottom: 10px;
             color: #ff4d6d;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
 
         p.message {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             line-height: 1.6;
             color: #555;
             margin-bottom: 30px;
+        }
+
+        /* --- Scroll Reveal Classes --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* --- Photo Grid --- */
@@ -76,11 +90,33 @@
             padding: 10px;
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .photo-card:hover {
-            transform: scale(1.05) rotate(2deg);
+        /* Desktop Hover Effect */
+        @media (min-width: 769px) {
+            .photo-card:hover {
+                transform: scale(1.05) rotate(2deg);
+                box-shadow: 0 10px 25px rgba(255, 77, 109, 0.4);
+                z-index: 2;
+            }
+        }
+
+        /* Mobile "Heartbeat" Animation (Replaces Hover) */
+        @media (max-width: 768px) {
+            .photo-card {
+                animation: gentleSway 3s infinite ease-in-out;
+            }
+            /* Stagger animations so they don't all move at once */
+            .photo-card:nth-child(even) {
+                animation-delay: 1.5s;
+            }
+        }
+
+        @keyframes gentleSway {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
         }
 
         .photo-card img {
@@ -121,11 +157,17 @@
             border-radius: 50px;
             cursor: pointer;
             margin-top: 20px;
-            transition: background 0.3s;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
         }
 
         .heart-btn:hover {
             background: #d63384;
+            transform: scale(1.05);
+        }
+
+        .heart-btn:active {
+            transform: scale(0.95);
         }
 
     </style>
@@ -133,70 +175,90 @@
 <body>
 
     <div class="container">
-        <h1>Happy Valentine's Day, Katty! 💖</h1>
-        <p class="message">
+        <h1 class="reveal">Happy Valentine's Day, Katty! 💖</h1>
+        <p class="message reveal">
             To the most amazing girl in the world. <br>
             Every moment with you is magic. Here are some of our best memories!
             <br>🌹🥰💑
         </p>
 
         <div class="photo-grid">
-            <div class="photo-card">
+            <div class="photo-card reveal">
                 <img src="photos/katty1.jpg" alt="Beautiful Katty">
                 <div class="caption">My Beautiful Katty 😍</div>
             </div>
             
-            <div class="photo-card">
+            <div class="photo-card reveal">
                 <img src="photos/katty2.jpg" alt="Katty">
                 <div class="caption">Stunning as always ✨</div>
             </div>
 
-            <div class="photo-card">
+            <div class="photo-card reveal">
                 <img src="photos/shashi1.jpg" alt="Shashi">
                 <div class="caption">Me thinking of you 💭</div>
             </div>
 
-            <div class="photo-card">
+            <div class="photo-card reveal">
                 <img src="photos/shashi2.jpg" alt="Shashi">
                 <div class="caption">Lucky to be yours 🍀</div>
             </div>
         </div>
 
-        <div class="footer">
+        <div class="footer reveal">
             Love always, Shashi ❤️
         </div>
         
-        <button class="heart-btn" onclick="rainHearts()">Send More Love! 💘</button>
+        <button class="heart-btn reveal" onclick="rainHearts()">Send More Love! 💘</button>
     </div>
 
     <script>
-        // Function to create falling background emojis
+        // --- Scroll Reveal Logic ---
+        function revealOnScroll() {
+            var reveals = document.querySelectorAll(".reveal");
+            var windowHeight = window.innerHeight;
+            var elementVisible = 100; // Trigger point
+
+            for (var i = 0; i < reveals.length; i++) {
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+
+        // Listen for scroll
+        window.addEventListener("scroll", revealOnScroll);
+        // Trigger once on load for elements already in view
+        revealOnScroll();
+
+        // --- Background Emojis ---
         function createEmoji() {
             const emojis = ['❤️', '💖', '🌹', '🥰', '💋', '💝', '😻'];
             const emoji = document.createElement('div');
             emoji.classList.add('bg-emoji');
             emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
             
-            // Random positioning
             emoji.style.left = Math.random() * 100 + 'vw';
-            emoji.style.animationDuration = Math.random() * 3 + 7 + 's'; // 7-10s duration
+            emoji.style.animationDuration = Math.random() * 3 + 7 + 's'; 
             emoji.style.fontSize = Math.random() * 20 + 20 + 'px';
             
             document.body.appendChild(emoji);
 
-            // Remove after animation finishes to keep DOM clean
             setTimeout(() => {
                 emoji.remove();
             }, 10000);
         }
 
-        // Start the background rain
-        setInterval(createEmoji, 300);
+        setInterval(createEmoji, 400); // Slightly slower creation for better performance
 
-        // Button Click Explosion Effect
+        // --- Button Explosion ---
         function rainHearts() {
             for(let i=0; i<30; i++) {
                 setTimeout(createEmoji, i * 50);
+            }
+            // Vibration for mobile tactile feedback
+            if (navigator.vibrate) {
+                navigator.vibrate(200);
             }
             alert("I Love You Katty! 💖");
         }
