@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhartiya Navchetana Enterprises - Creative Agency & Portfolio</title>
+    <meta name="description" content="Digital Growth Agency - Web Development, E-commerce, and Strategic Marketing.">
+    <link rel="icon" type="image/png" href="https://bhartiyanavchetanaenterprises.com/photos/logocolor.png">
+    <link rel="apple-touch-icon" href="https://bhartiyanavchetanaenterprises.com/photos/logocolor.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- Core Theme Variables --- */
+        :root {
+            --primary-color: #03e9f4;
+            --bg-color: #0f1012;
+            --card-bg: #18191c;
+            --text-color: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Floating Background Animation --- */
+        .platform-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .platform-bg img {
+            position: absolute;
+            opacity: 0.08; /* Subtle visibility */
+            filter: grayscale(100%);
+            will-change: transform;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.08; }
+            90% { opacity: 0.08; }
+            100% { transform: translateY(-20vh) translateX(50px) rotate(15deg); opacity: 0; }
+        }
+
+        .float { animation: floatUp linear infinite; }
+        .slow { animation-duration: 25s; }
+        .slower { animation-duration: 40s; }
+        .size-lg { width: 180px; }
+        .size-md { width: 120px; }
+        .size-sm { width: 80px; }
+
+        /* Random Delays for natural feel */
+        .platform-bg img:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .platform-bg img:nth-child(2) { left: 25%; animation-delay: 12s; }
+        .platform-bg img:nth-child(3) { left: 50%; animation-delay: 5s; }
+        .platform-bg img:nth-child(4) { left: 70%; animation-delay: 18s; }
+        .platform-bg img:nth-child(5) { left: 85%; animation-delay: 8s; }
+
+        /* --- Scroll Reveal Animation Classes --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Staggered delays for grids */
+        .delay-100 { transition-delay: 100ms; }
+        .delay-200 { transition-delay: 200ms; }
+        .delay-300 { transition-delay: 300ms; }
+
+        /* --- Custom UI Elements --- */
+        .glass-header {
+            background: rgba(15, 16, 18, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .btn-glow {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .btn-glow:hover {
+            box-shadow: 0 0 15px rgba(3, 233, 244, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* Portfolio & Card Hovers */
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            border-color: rgba(3, 233, 244, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Hero Image Glow */
+        .hero-img-wrapper {
+            box-shadow: 0 0 30px rgba(3, 233, 244, 0.2);
+            animation: pulse-glow 3s infinite alternate;
+        }
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 20px rgba(3, 233, 244, 0.2); }
+            100% { box-shadow: 0 0 40px rgba(3, 233, 244, 0.5); }
+        }
+
+        /* Custom Radio Button */
+        .custom-radio {
+            appearance: none;
+            width: 1.2em;
+            height: 1.2em;
+            border: 2px solid #555;
+            border-radius: 50%;
+            display: grid;
+            place-content: center;
+            transition: 0.2s all;
+        }
+        .custom-radio::before {
+            content: "";
+            width: 0.65em;
+            height: 0.65em;
+            border-radius: 50%;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            background-color: var(--primary-color);
+            box-shadow: 0 0 8px var(--primary-color);
+        }
+        .custom-radio:checked { border-color: var(--primary-color); }
+        .custom-radio:checked::before { transform: scale(1); }
+
+        /* Slider */
+        .slider-wrapper { scroll-behavior: smooth; }
+        .slider-nav-btn {
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            transition: all 0.2s;
+        }
+        .slider-nav-btn:hover { background: var(--primary-color); color: black; }
+        
+        /* Mobile Menu Animation */
+        #mobile-menu {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        #mobile-menu.open {
+            max-height: 400px;
+            opacity: 1;
+        }
+
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand': '#03e9f4',
+                        'dark-bg': '#0f1012',
+                        'dark-card': '#18191c',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="antialiased selection:bg-brand selection:text-black">
+
+    <div class="platform-bg">
+        <img src="https://bhartiyanavchetanaenterprises.com/photos/amazon.png" class="float slow size-lg" alt="bg">
+        <img src="https://bhartiyanavchetanaenterprises.com/photos/shopify.png" class="float slower size-md" alt="bg">
+        <img src="https://bhartiyanavchetanaenterprises.com/photos/flipkart.png" class="float slow size-md" alt="bg">
+        <img src="https://bhartiyanavchetanaenterprises.com/photos/amazon.png" class="float slower size-sm" alt="bg">
+        <img src="https://bhartiyanavchetanaenterprises.com/photos/shopify.png" class="float slow size-lg" alt="bg">
+    </div>
+
+    <header class="fixed top-0 w-full z-50 glass-header transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="#" class="flex items-center group">
+                    <span class="text-xl sm:text-2xl font-extrabold text-white tracking-wide group-hover:text-brand transition-colors">
+                       <span class="text-brand"> Bhartiya Navchetana </span> Enterprises
+                    </span>
+                </a>
+
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="services.html" class="text-sm font-medium text-gray-300 hover:text-brand transition duration-150">Services</a>
+                    <a href="#portfolio" class="text-sm font-medium text-gray-300 hover:text-brand transition duration-150">Portfolio</a>
+                    <a href="#pricing" class="text-sm font-medium text-gray-300 hover:text-brand transition duration-150">Pricing</a>
+                    <a href="#testimonials" class="text-sm font-medium text-gray-300 hover:text-brand transition duration-150">Reviews</a>
+                    <a href="#contact" class="px-5 py-2.5 rounded-full bg-brand text-black font-bold text-sm btn-glow hover:bg-white transition-colors">
+                        Start a Project
+                    </a>
+                </nav>
+
+                <button id="mobile-menu-button" class="md:hidden text-gray-300 hover:text-brand focus:outline-none p-2">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="md:hidden bg-dark-card border-b border-gray-800">
+            <div class="px-4 pt-2 pb-6 space-y-2 flex flex-col">
+                <a href="services.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-white/5 hover:text-brand">Services</a>
+                <a href="#portfolio" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-white/5 hover:text-brand">Portfolio</a>
+                <a href="#pricing" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-white/5 hover:text-brand">Pricing</a>
+                <a href="#testimonials" class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-white/5 hover:text-brand">Reviews</a>
+                <a href="#contact" class="block mt-4 px-3 py-3 rounded-lg bg-brand text-black text-center font-bold">Start a Project</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="relative z-10">
+        
+        <section id="hero" class="relative pt-32 pb-20 lg:pt-40 lg:pb-32 flex flex-col items-center justify-center min-h-[90vh]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal active">
+                
+                <div class="hero-img-wrapper w-40 h-40 sm:w-48 sm:h-48 rounded-full border-4 border-brand mx-auto mb-8 overflow-hidden bg-black">
+                    <img src="https://bhartiyanavchetanaenterprises.com/photos/bnelogocenter.png" 
+                         alt="Agency Logo" 
+                         fetchpriority="high"
+                         onerror="this.src='https://placehold.co/400x400/121212/03e9f4?text=BNE';"
+                         class="object-cover w-full h-full transform hover:scale-110 transition duration-700"/>
+                </div>
+                
+                <h1 class="text-4xl sm:text-5xl lg:text-7xl font-extrabold leading-tight mb-6 tracking-tight">
+                    Vision of <span class="text-brand text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">B.N.E</span><br>
+                    <span class="text-white">Dominating E-commerce.</span>
+                </h1>
+                
+                <p class="text-lg sm:text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+                    Bhartiya Navchetana Enterprises fuses creativity with technology. We drive measurable growth through high-performance web development and strategic marketing.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="#portfolio" class="px-8 py-4 rounded-full bg-brand text-black font-bold text-lg btn-glow hover:bg-white transition-colors">
+                        View Our Work
+                    </a>
+                    <a href="#contact" class="px-8 py-4 rounded-full border border-gray-600 text-white font-bold text-lg hover:border-brand hover:text-brand transition-colors backdrop-blur-sm">
+                        Let's Talk
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="services-preview" class="py-24 bg-dark-card/30 backdrop-blur-sm border-t border-white/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-3xl lg:text-4xl font-bold mb-4">Our Core Capabilities</h2>
+                    <p class="text-gray-400 max-w-xl mx-auto">Full digital lifecycle coverage, from concept to scaling.</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-dark-card p-8 rounded-2xl border border-white/5 hover-lift reveal delay-100">
+                        <div class="w-14 h-14 bg-brand/10 rounded-xl flex items-center justify-center mb-6">
+                            <svg class="w-8 h-8 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Full Stack Dev</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Robust, scalable applications using React, Node.js, and modern frameworks tailored for speed.</p>
+                    </div>
+
+                    <div class="bg-dark-card p-8 rounded-2xl border border-white/5 hover-lift reveal delay-200">
+                        <div class="w-14 h-14 bg-brand/10 rounded-xl flex items-center justify-center mb-6">
+                            <svg class="w-8 h-8 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">UI/UX Design</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">Intuitive, mobile-first interfaces that prioritize user experience and drive higher conversion rates.</p>
+                    </div>
+
+                    <div class="bg-dark-card p-8 rounded-2xl border border-white/5 hover-lift reveal delay-300">
+                        <div class="w-14 h-14 bg-brand/10 rounded-xl flex items-center justify-center mb-6">
+                            <svg class="w-8 h-8 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 17h18M5 10h14a2 2 0 012 2v3a2 2 0 01-2 2H5a2 2 0 01-2-2v-3a2 2 0 012-2z"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">E-commerce Strategy</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">High-performance stores with seamless payment integration, inventory management, and marketing.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="portfolio" class="py-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-3xl lg:text-4xl font-bold mb-4">Cases That Convert</h2>
+                    <p class="text-gray-400 max-w-xl mx-auto">Selected projects demonstrating performance and success.</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-dark-card rounded-2xl overflow-hidden border border-white/5 hover-lift reveal delay-100">
+                        <img src="https://placehold.co/600x400/18191c/03e9f4?text=Apex+Gear" loading="lazy" alt="Project" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-white mb-1">Apex Gear Shop</h3>
+                            <p class="text-brand text-xs font-bold uppercase tracking-wider mb-3">E-commerce / React</p>
+                            <p class="text-gray-400 text-sm">Headless e-commerce site focused on outdoor equipment with sub-second load times.</p>
+                        </div>
+                    </div>
+                    <div class="bg-dark-card rounded-2xl overflow-hidden border border-white/5 hover-lift reveal delay-200">
+                        <img src="https://placehold.co/600x400/18191c/03e9f4?text=DataFlow" loading="lazy" alt="Project" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-white mb-1">DataFlow Analytics</h3>
+                            <p class="text-brand text-xs font-bold uppercase tracking-wider mb-3">SaaS / UI/UX</p>
+                            <p class="text-gray-400 text-sm">Complete dashboard redesign for a B2B SaaS platform increasing user retention.</p>
+                        </div>
+                    </div>
+                    <div class="bg-dark-card rounded-2xl overflow-hidden border border-white/5 hover-lift reveal delay-300">
+                        <img src="https://placehold.co/600x400/18191c/03e9f4?text=Fusion+Corp" loading="lazy" alt="Project" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-white mb-1">Fusion Identity</h3>
+                            <p class="text-brand text-xs font-bold uppercase tracking-wider mb-3">Corporate / Wordpress</p>
+                            <p class="text-gray-400 text-sm">Professional corporate site with high-impact visual storytelling and SEO optimization.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="py-24 bg-dark-card/30 backdrop-blur-sm border-y border-white/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="lg:flex lg:items-center lg:gap-16">
+                    <div class="lg:w-1/2 reveal">
+                        <span class="text-brand font-bold uppercase tracking-widest text-sm mb-2 block">Our Philosophy</span>
+                        <h2 class="text-3xl lg:text-5xl font-extrabold mb-6 text-white leading-tight">Driven by Results,<br>Focused on <span class="text-brand">Partnership</span>.</h2>
+                        <p class="text-gray-400 mb-6 text-lg leading-relaxed">
+                            We don't just execute; we strategize. We treat your business like our own, ensuring every line of code maximizes your ROI.
+                        </p>
+                        <ul class="space-y-4">
+                            <li class="flex items-center text-gray-300">
+                                <span class="w-6 h-6 rounded-full bg-brand/20 text-brand flex items-center justify-center mr-3 text-sm">✓</span>
+                                <span><strong>Agile:</strong> Quick iterations & feedback loops.</span>
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <span class="w-6 h-6 rounded-full bg-brand/20 text-brand flex items-center justify-center mr-3 text-sm">✓</span>
+                                <span><strong>Performance:</strong> Optimized for speed & SEO.</span>
+                            </li>
+                            <li class="flex items-center text-gray-300">
+                                <span class="w-6 h-6 rounded-full bg-brand/20 text-brand flex items-center justify-center mr-3 text-sm">✓</span>
+                                <span><strong>Scalable:</strong> Architecture that grows with you.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="lg:w-1/2 mt-12 lg:mt-0 reveal delay-200">
+                        <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 group">
+                            <div class="absolute inset-0 bg-brand/10 group-hover:bg-transparent transition duration-500 z-10"></div>
+                            <img src="https://bhartiyanavchetanaenterprises.com/photos/digitalstrategy.png" loading="lazy" alt="Strategy" class="w-full object-cover transform group-hover:scale-105 transition duration-700">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="pricing" class="py-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-3xl lg:text-4xl font-bold mb-4">Transparent Pricing</h2>
+                    <p class="text-gray-400">Choose the plan that fits your scale.</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8 mb-20">
+                    <div class="bg-dark-card rounded-2xl p-8 border border-white/5 hover:border-brand/50 transition-all reveal delay-100 flex flex-col">
+                        <h3 class="text-2xl font-bold text-white">Starter</h3>
+                        <p class="text-gray-400 text-sm mb-6">For new businesses</p>
+                        <div class="mb-8">
+                            <span class="text-4xl font-bold text-white">₹3,999</span>
+                            <span class="text-gray-500 text-sm block mt-1 line-through">₹5,999</span>
+                        </div>
+                        <ul class="space-y-3 mb-8 flex-1 text-gray-300 text-sm">
+                            <li class="flex gap-2"><span class="text-brand">✓</span> Account Launch</li>
+                            <li class="flex gap-2"><span class="text-brand">✓</span> 90 Listings/Month</li>
+                            <li class="flex gap-2"><span class="text-brand">✓</span> Order Training</li>
+                            <li class="flex gap-2"><span class="text-brand">✓</span> 5 Listing Photos</li>
+                        </ul>
+                        <a href="#contact" class="w-full py-3 rounded-xl bg-white/10 text-white font-bold text-center hover:bg-white hover:text-black transition-colors">Get Started</a>
+                    </div>
+
+                    <div class="bg-[#1e1a2b] rounded-2xl p-8 border-2 border-brand/40 shadow-[0_0_20px_rgba(3,233,244,0.15)] relative transform md:-translate-y-4 reveal delay-200 flex flex-col">
+                        <div class="absolute top-0 right-0 bg-brand text-black text-xs font-bold px-3 py-1 rounded-bl-lg">POPULAR</div>
+                        <h3 class="text-2xl font-bold text-white">Standard</h3>
+                        <p class="text-gray-400 text-sm mb-6">For growing sellers</p>
+                        <div class="mb-8">
+                            <span class="text-4xl font-bold text-brand">₹5,999</span>
+                            <span class="text-gray-500 text-sm block mt-1 line-through">₹9,999</span>
+                        </div>
+                        <ul class="space-y-3 mb-8 flex-1 text-gray-300 text-sm">
+                            <li class="flex gap-2"><span class="text-brand">✓</span> Everything in Starter</li>
+                            <li class="flex gap-2"><span class="text-brand">✓</span> 120 Listings/Month</li>
+                            <li class="flex gap-2"><span class="text-brand">✓</span> 10 Listing Photos</li>
+                            <li class="flex gap-2"><span class="text-brand">✓</span> 20% Sale Boost Guarantee</li>
+                            <li class="flex gap-2"><span class="text-brand">✓</span> Weekly Updates</li>
+                        </ul>
+                        <a href="#contact" class="w-full py-3 rounded-xl bg-brand text-black font-bold text-center btn-glow hover:bg-white transition-colors">Select Plan</a>
+                    </div>
+
+                    <div class="bg-dark-card rounded-2xl p-8 border border-white/5 hover:border-brand/50 transition-all reveal delay-300 flex flex-col">
+                        <h3 class="text-2xl font-bold text-white">Pro</h3>
+                        <p class="text-gray-400 text-sm mb-6">For enterprise scale</p>
+                        <div class="mb-8">
+                            <span class="text-4xl font-bold text-white">₹9,999+</span>
+                            <span class="text-gray-500 text-sm block mt-1 line-through">₹14,999</span>
+                        </div>
+                        <ul class="space-y-3 mb-8 flex-1 text-gray-300 text-sm">
+                            <li class="flex gap-2"><span class="text-brand">✓</span> Everything in Standard</li>
+                            <li class="flex gap-2"><span class="text-brand">✓</span> 300+ Listings</li>
+                            <li class="flex gap-2"><span class="text-brand">✓</span> A+ Content Creation</li>
+                            <li class="flex gap-2"><span class="text-brand">✓</span> Daily Reporting</li>
+                            <li class="flex gap-2"><span class="text-brand">✓</span> 30% Sale Boost Guarantee</li>
+                        </ul>
+                        <a href="#contact" class="w-full py-3 rounded-xl bg-white/10 text-white font-bold text-center hover:bg-white hover:text-black transition-colors">Contact Sales</a>
+                    </div>
+                </div>
+
+                <div class="mt-20 reveal">
+                     <h3 class="text-2xl font-bold text-white mb-6 text-center">Graphic Design Add-ons</h3>
+                     <div class="overflow-hidden rounded-2xl shadow-2xl border border-white/10">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse bg-dark-card/50 backdrop-blur-md min-w-[700px]">
+                                <thead>
+                                    <tr>
+                                        <th class="p-6 border-b border-white/10 text-white w-1/4">Package</th>
+                                        <th class="p-6 border-b border-white/10 w-1/4">
+                                            <div class="text-xl font-bold text-white" id="price-header-starter">₹477</div>
+                                            <div class="text-brand text-sm font-bold">Basic</div>
+                                        </th>
+                                        <th class="p-6 border-b border-white/10 w-1/4 bg-white/5">
+                                            <div class="text-xl font-bold text-white" id="price-header-standard">₹953</div>
+                                            <div class="text-brand text-sm font-bold">Standard</div>
+                                        </th>
+                                        <th class="p-6 border-b border-white/10 w-1/4">
+                                            <div class="text-xl font-bold text-white" id="price-header-pro">₹1,429</div>
+                                            <div class="text-brand text-sm font-bold">Premium</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm">
+                                    <tr>
+                                        <td class="p-6 text-gray-300 font-semibold border-b border-white/5">Deliverables</td>
+                                        <td class="p-6 text-gray-400 border-b border-white/5">5 Listing Images</td>
+                                        <td class="p-6 text-gray-400 border-b border-white/5 bg-white/5">10 Listing Images</td>
+                                        <td class="p-6 text-gray-400 border-b border-white/5">10 Listings + 5 A+ Content</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-6 text-gray-300 font-semibold border-b border-white/5">Delivery Speed</td>
+                                        <td class="p-6 border-b border-white/5">
+                                            <label class="flex items-center space-x-2 cursor-pointer mb-2">
+                                                <input type="radio" name="delivery-starter" value="normal" checked class="custom-radio" onchange="updatePrice('starter')">
+                                                <span class="text-gray-300">Standard (2 days)</span>
+                                            </label>
+                                            <label class="flex items-center space-x-2 cursor-pointer">
+                                                <input type="radio" name="delivery-starter" value="fast" class="custom-radio" onchange="updatePrice('starter')">
+                                                <span class="text-gray-300">Fast (1 day) <span class="text-brand">+₹477</span></span>
+                                            </label>
+                                        </td>
+                                        <td class="p-6 border-b border-white/5 bg-white/5">
+                                            <label class="flex items-center space-x-2 cursor-pointer mb-2">
+                                                <input type="radio" name="delivery-standard" value="normal" checked class="custom-radio" onchange="updatePrice('standard')">
+                                                <span class="text-gray-300">Standard (3 days)</span>
+                                            </label>
+                                            <label class="flex items-center space-x-2 cursor-pointer">
+                                                <input type="radio" name="delivery-standard" value="fast" class="custom-radio" onchange="updatePrice('standard')">
+                                                <span class="text-gray-300">Fast (1 day) <span class="text-brand">+₹477</span></span>
+                                            </label>
+                                        </td>
+                                        <td class="p-6 border-b border-white/5">
+                                            <label class="flex items-center space-x-2 cursor-pointer mb-2">
+                                                <input type="radio" name="delivery-pro" value="normal" checked class="custom-radio" onchange="updatePrice('pro')">
+                                                <span class="text-gray-300">Standard (4 days)</span>
+                                            </label>
+                                            <label class="flex items-center space-x-2 cursor-pointer">
+                                                <input type="radio" name="delivery-pro" value="fast" class="custom-radio" onchange="updatePrice('pro')">
+                                                <span class="text-gray-300">Fast (1 day) <span class="text-brand">+₹477</span></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-6 text-gray-300 font-semibold">Total</td>
+                                        <td class="p-6">
+                                            <div class="text-xl font-bold text-white mb-3" id="price-total-starter">₹477</div>
+                                            <a href="#contact" class="block w-full py-2 rounded-lg bg-white/10 text-center hover:bg-brand hover:text-black transition">Select</a>
+                                        </td>
+                                        <td class="p-6 bg-white/5">
+                                            <div class="text-xl font-bold text-white mb-3" id="price-total-standard">₹953</div>
+                                            <a href="#contact" class="block w-full py-2 rounded-lg bg-brand text-black font-bold text-center hover:bg-white transition">Select</a>
+                                        </td>
+                                        <td class="p-6">
+                                            <div class="text-xl font-bold text-white mb-3" id="price-total-pro">₹1,429</div>
+                                            <a href="#contact" class="block w-full py-2 rounded-lg bg-white/10 text-center hover:bg-brand hover:text-black transition">Select</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials" class="py-24 bg-dark-card/30 backdrop-blur-sm border-y border-white/5">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl lg:text-4xl font-bold text-center mb-16 reveal">Trusted By <span class="text-brand">Global Brands</span></h2>
+                
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-dark-bg p-8 rounded-2xl border border-white/5 shadow-lg reveal delay-100 flex flex-col">
+                        <div class="text-yellow-400 mb-4">★★★★★</div>
+                        <p class="text-gray-300 italic mb-6 flex-1">"BNE cut our page load time in half. We saw a 28% lift in mobile conversions within two months. Reliable delivery."</p>
+                        <div class="flex items-center">
+                            <img src="https://placehold.co/50x50/333/fff?text=V" alt="Vivo" class="w-10 h-10 rounded-full mr-3">
+                            <div>
+                                <p class="font-bold text-white text-sm">Marketing Lead</p>
+                                <p class="text-xs text-gray-500">Vivo Mobile</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-dark-bg p-8 rounded-2xl border border-white/5 shadow-lg reveal delay-200 flex flex-col">
+                        <div class="text-yellow-400 mb-4">★★★★★</div>
+                        <p class="text-gray-300 italic mb-6 flex-1">"Zero downtime during our catalog migration. Sales grew 34% in the first quarter. Highly professional."</p>
+                        <div class="flex items-center">
+                            <img src="https://placehold.co/50x50/333/fff?text=A" alt="Aqua" class="w-10 h-10 rounded-full mr-3">
+                            <div>
+                                <p class="font-bold text-white text-sm">Sales Director</p>
+                                <p class="text-xs text-gray-500">Aquafresh</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-dark-bg p-8 rounded-2xl border border-white/5 shadow-lg reveal delay-300 flex flex-col">
+                        <div class="text-yellow-400 mb-4">★★★★★</div>
+                        <p class="text-gray-300 italic mb-6 flex-1">"The new checkout flow reduced cart abandonment significantly. Real ongoing support that matters."</p>
+                        <div class="flex items-center">
+                            <img src="https://placehold.co/50x50/333/fff?text=P" alt="Polo" class="w-10 h-10 rounded-full mr-3">
+                            <div>
+                                <p class="font-bold text-white text-sm">Product Manager</p>
+                                <p class="text-xs text-gray-500">Polo Chairs</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="founder" class="py-24">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl lg:text-4xl font-bold text-center mb-12 reveal">Meet the Founder: <span class="text-brand">Nilesh Bhartiya</span></h2>
+                
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div class="order-2 lg:order-1 reveal">
+                        <p class="text-lg text-gray-300 mb-6 leading-relaxed">
+                            Nilesh Bhartiya is a results-driven e-commerce specialist. He helps businesses launch, manage, and scale their digital presence with end-to-end support.
+                        </p>
+                        <div class="p-6 bg-dark-card rounded-xl border-l-4 border-brand mb-8">
+                            <p class="text-white italic">"My work is centered on clear strategy, clean execution, and measurable growth."</p>
+                        </div>
+                        <ul class="grid grid-cols-2 gap-4 text-sm text-gray-400">
+                            <li class="flex items-center"><span class="w-2 h-2 bg-brand rounded-full mr-2"></span>Catalog Setup</li>
+                            <li class="flex items-center"><span class="w-2 h-2 bg-brand rounded-full mr-2"></span>Brand Presentation</li>
+                            <li class="flex items-center"><span class="w-2 h-2 bg-brand rounded-full mr-2"></span>Marketplace Mgmt</li>
+                            <li class="flex items-center"><span class="w-2 h-2 bg-brand rounded-full mr-2"></span>Scaling Strategy</li>
+                        </ul>
+                    </div>
+
+                    <div class="order-1 lg:order-2 reveal delay-200">
+                        <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10 h-[400px] group">
+                            <div id="founder-slider" class="flex h-full transition-transform duration-500 ease-in-out">
+                                <div class="min-w-full h-full"><img src="https://bhartiyanavchetanaenterprises.com/photos/nilesphoto1.jpeg" class="w-full h-full object-cover" alt="Nilesh 1" onerror="this.src='https://placehold.co/800x500/18191c/333?text=Photo+1'"></div>
+                                <div class="min-w-full h-full"><img src="https://bhartiyanavchetanaenterprises.com/photos/nilesphoto2.jpeg" class="w-full h-full object-cover" alt="Nilesh 2" onerror="this.src='https://placehold.co/800x500/18191c/333?text=Photo+2'"></div>
+                                <div class="min-w-full h-full"><img src="https://bhartiyanavchetanaenterprises.com/photos/nilesphoto3.jpeg" class="w-full h-full object-cover" alt="Nilesh 3" onerror="this.src='https://placehold.co/800x500/18191c/333?text=Photo+3'"></div>
+                            </div>
+                            
+                            <button id="prev-slide" class="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full slider-nav-btn text-white z-10">❮</button>
+                            <button id="next-slide" class="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full slider-nav-btn text-white z-10">❯</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-24">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-gradient-to-br from-dark-card to-black p-12 rounded-3xl text-center border border-white/10 shadow-2xl reveal relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-brand/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+
+                    <h2 class="text-3xl md:text-5xl font-bold mb-6 text-white relative z-10">Ready to Scale?</h2>
+                    <p class="text-xl text-gray-400 mb-10 max-w-2xl mx-auto relative z-10">
+                        Tell us about your project challenges. We'll provide the strategy to solve them.
+                    </p>
+                    <div class="flex flex-col sm:flex-row justify-center gap-4 relative z-10">
+                        <a href="https://wa.me/917903953137?text=Hi%20Nilesh%20Bhartiya" class="px-10 py-4 rounded-full bg-brand text-black font-bold text-lg btn-glow hover:bg-white transition-colors">
+                            WhatsApp Us
+                        </a>
+                        <a href="mailto:hello@bhartiyanavchetana.com" class="px-10 py-4 rounded-full border border-gray-600 text-white font-bold text-lg hover:border-brand hover:text-brand transition-colors">
+                            Email Us
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <a href="https://wa.me/917903953137?text=Hi%20Nilesh" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       class="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full shadow-[0_4px_14px_rgba(0,255,0,0.4)] hover:scale-110 transition-transform duration-300">
+       <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="w-full h-full">
+    </a>
+
+    <footer class="bg-dark-bg border-t border-gray-800 pt-16 pb-8 relative overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-1 bg-gradient-to-r from-transparent via-brand to-transparent opacity-50"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 text-sm">
+
+                <div class="space-y-6">
+                    <div>
+                        <span class="text-brand"> Bhartiya Navchetana </span> Enterprises
+                        <p class="text-gray-400 mt-4 leading-relaxed">
+                            Empowering brands through impactful digital solutions, strategic marketing, and e-commerce dominance. Based in Patna, serving the globe.
+                        </p>
+                    </div>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-dark-card border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:border-brand hover:bg-brand/10 transition-all duration-300">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-dark-card border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:border-brand hover:bg-brand/10 transition-all duration-300">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/></svg>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-dark-card border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:border-brand hover:bg-brand/10 transition-all duration-300">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-white font-bold mb-6 uppercase tracking-wider border-b border-gray-800 pb-2 inline-block">Explore</h3>
+                    <ul class="space-y-3">
+                        <li><a href="services.html" class="text-gray-400 hover:text-brand transition-colors flex items-center group"><span class="w-1.5 h-1.5 rounded-full bg-gray-600 mr-2 group-hover:bg-brand transition-colors"></span>Services</a></li>
+                        <li><a href="#portfolio" class="text-gray-400 hover:text-brand transition-colors flex items-center group"><span class="w-1.5 h-1.5 rounded-full bg-gray-600 mr-2 group-hover:bg-brand transition-colors"></span>Case Studies</a></li>
+                        <li><a href="#pricing" class="text-gray-400 hover:text-brand transition-colors flex items-center group"><span class="w-1.5 h-1.5 rounded-full bg-gray-600 mr-2 group-hover:bg-brand transition-colors"></span>Pricing Plans</a></li>
+                        <li><a href="#founder" class="text-gray-400 hover:text-brand transition-colors flex items-center group"><span class="w-1.5 h-1.5 rounded-full bg-gray-600 mr-2 group-hover:bg-brand transition-colors"></span>Founder</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-brand transition-colors flex items-center group"><span class="w-1.5 h-1.5 rounded-full bg-gray-600 mr-2 group-hover:bg-brand transition-colors"></span>Get a Quote</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-white font-bold mb-6 uppercase tracking-wider border-b border-gray-800 pb-2 inline-block">Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-brand transition-colors flex items-center group"><span class="w-1.5 h-1.5 rounded-full bg-gray-600 mr-2 group-hover:bg-brand transition-colors"></span>Documentation</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-brand transition-colors flex items-center group"><span class="w-1.5 h-1.5 rounded-full bg-gray-600 mr-2 group-hover:bg-brand transition-colors"></span>Support Center</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-brand transition-colors flex items-center group"><span class="w-1.5 h-1.5 rounded-full bg-gray-600 mr-2 group-hover:bg-brand transition-colors"></span>Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-brand transition-colors flex items-center group"><span class="w-1.5 h-1.5 rounded-full bg-gray-600 mr-2 group-hover:bg-brand transition-colors"></span>Terms of Service</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-brand transition-colors flex items-center group"><span class="w-1.5 h-1.5 rounded-full bg-gray-600 mr-2 group-hover:bg-brand transition-colors"></span>Sitemap</a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-6">
+                    <h3 class="text-white font-bold uppercase tracking-wider">Stay Updated</h3>
+                    <p class="text-gray-400 text-sm">Join our newsletter for the latest e-commerce trends and strategies.</p>
+                    
+                    <form class="space-y-3" onsubmit="event.preventDefault();">
+                        <div class="relative">
+                            <input type="email" placeholder="Enter your email" class="w-full bg-dark-card border border-gray-700 text-white rounded-lg px-4 py-3 focus:outline-none focus:border-brand transition-colors">
+                        </div>
+                        <button type="submit" class="w-full bg-brand text-black font-bold py-3 rounded-lg hover:bg-white transition-colors duration-300">
+                            Subscribe Now
+                        </button>
+                    </form>
+
+                    <div class="pt-4 border-t border-gray-800">
+                         <p class="text-gray-400 text-sm mb-1"><strong class="text-white">Email:</strong> hello@bhartiyanavchetana.com</p>
+                         <p class="text-gray-400 text-sm"><strong class="text-white">Phone:</strong> +91 7903953137</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mt-16 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
+                <p>&copy; 2024 Bhartiya Navchetana Enterprises. All rights reserved.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-brand transition-colors">Privacy</a>
+                    <a href="#" class="hover:text-brand transition-colors">Terms</a>
+                    <a href="#" class="hover:text-brand transition-colors">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. ALWAYS ANIMATE Reveal on Scroll ---
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Element is in view: Trigger animation
+                    entry.target.classList.add('active');
+                } else {
+                    // Element is out of view: Reset animation
+                    // This ensures it animates again when you scroll back to it
+                    entry.target.classList.remove('active');
+                }
+            });
+        }, { 
+            threshold: 0.15, // Slightly higher threshold to prevent flickering at edges
+            rootMargin: "0px 0px -50px 0px" // Triggers slightly before the element hits the bottom
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // --- 2. Mobile Menu Toggle ---
+        const btn = document.getElementById('mobile-menu-button');
+        const menu = document.getElementById('mobile-menu');
+
+        if (btn && menu) {
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('open');
+            });
+
+            // Close menu when clicking a link
+            menu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menu.classList.remove('open');
+                });
+            });
+        }
+
+        // --- 3. Founder Slider Logic ---
+        let slideIndex = 0;
+        const sliderContainer = document.getElementById('founder-slider');
+        
+        if (sliderContainer) {
+            const slides = sliderContainer.children;
+            const totalSlides = slides.length;
+
+            function showSlide(index) {
+                if (index >= totalSlides) slideIndex = 0;
+                if (index < 0) slideIndex = totalSlides - 1;
+                const offset = -slideIndex * 100;
+                sliderContainer.style.transform = `translateX(${offset}%)`;
+            }
+
+            const nextBtn = document.getElementById('next-slide');
+            const prevBtn = document.getElementById('prev-slide');
+
+            if (nextBtn) nextBtn.addEventListener('click', () => { slideIndex++; showSlide(slideIndex); });
+            if (prevBtn) prevBtn.addEventListener('click', () => { slideIndex--; showSlide(slideIndex); });
+
+            // Auto slide
+            setInterval(() => {
+                slideIndex++;
+                showSlide(slideIndex);
+            }, 5000);
+        }
+
+        // --- 4. Pricing Logic ---
+        const basePrices = { starter: 477, standard: 953, pro: 1429 };
+
+        function updatePrice(plan) {
+            let extra = 0;
+            const radios = document.getElementsByName('delivery-' + plan);
+            for(let radio of radios) {
+                if(radio.checked && radio.value === 'fast') extra = 477;
+            }
+            const finalPrice = '₹' + (basePrices[plan] + extra).toLocaleString('en-IN');
+            
+            const headerPrice = document.getElementById('price-header-' + plan);
+            const totalPrice = document.getElementById('price-total-' + plan);
+            
+            if (headerPrice) headerPrice.innerText = finalPrice;
+            if (totalPrice) totalPrice.innerText = finalPrice;
+        }
+    </script>
+</body>
+</html>
